@@ -13,17 +13,19 @@ function getComputerChoice(){
 }
 
 //get human choice
-function getHumanChoice(){
-    let choice = window.prompt("Rock, Paper, or Scissors?");
-    return choice.toLowerCase();
-}
+// function getHumanChoice(){
+//     let choice = window.prompt("Rock, Paper, or Scissors?");
+//     return choice.toLowerCase();
+// }
 
 //determine who wins
-function playRound(){
-    let humChoice = getHumanChoice();
-    console.log(humChoice);
+function playRound(choice){
+    // let humChoice = getHumanChoice();
+
+    let humChoice = choice;
+    //console.log(`human: ${humChoice}`);
     let compChoice = getComputerChoice();
-    console.log(compChoice);
+    //console.log(`computer: ${compChoice}`);
 
 
     if (humChoice == compChoice) {
@@ -55,15 +57,73 @@ function playRound(){
     }
 }
 
-function playGame(){
-    for(let i = 0; i < 5; i++){
-        console.log (playRound());
-        console.log(humanScore);
-        console.log(computerScore);
-    }
-}
+// create 3 buttons for selection
+// add event listener to buttons
+// call playRound with the correct "playerSelection" once the button is clicked
 
 let humanScore = 0;
 let computerScore = 0;
 
-playGame();
+
+const rock = document.createElement("button");
+const paper = document.createElement("button");
+const scissors = document.createElement("button");
+
+rock.textContent = "rock";
+paper.textContent = "paper";
+scissors.textContent = "scissors";
+
+document.body.appendChild(rock);
+document.body.appendChild(paper);
+document.body.appendChild(scissors);
+
+
+const body = document.querySelector("body");
+// body.style.cssText = "display: flex; gap: 10px";
+
+let end = false;
+
+body.addEventListener("click", (event) => {
+    if (end){
+        return;
+    }
+
+    let target = event.target;
+    let res;
+
+    switch(target.textContent){
+        case "rock":
+            res = playRound("rock");
+            break;
+        case "paper":
+            res = playRound("paper");
+            break;
+        case "scissors":
+            res = playRound("scissors");
+            break;
+        default:
+            return;
+    }
+
+    let div = document.createElement("div");
+    div.textContent = res + " You: " + humanScore + " Computer: " + computerScore;
+    document.body.appendChild(div);
+
+    if (humanScore == 5){
+        div = document.createElement("div");
+        div.textContent = "You beat the computer!";
+        document.body.appendChild(div);
+        end = true;
+        return;
+    }
+    
+    if (computerScore == 5){
+        div = document.createElement("div");
+        div.textContent = "Computer Wins!";
+        document.body.appendChild(div);
+        end = true;
+        return;
+    }
+
+});
+
